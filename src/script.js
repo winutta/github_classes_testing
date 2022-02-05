@@ -1,26 +1,14 @@
 import './style.css'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
-import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
-
-import vertShader from "./shaders/vertShader.glsl"
-import fragShader from "./shaders/fragShader.glsl"
-
 import {Text} from 'troika-three-text'
 
-import {blurbSystem} from "./Blurb.js"
 
-import {mouseManager,tester} from "./clickTest.js"
+import {blurbSystem} from "./core/Blurb.js"
+import {mouseManager,tester} from "./core/mouseManagement.js"
 
 
 function main() {
-
-// Add comment
-
-//Comment from the edit branch
-
-//second comment from the edit branch
 
 const TWEEN = require('@tweenjs/tween.js')
 // ROLL THE SCENE			
@@ -118,18 +106,6 @@ blurbs.forEach((element)=>{
 });
 
 
-// ADD TWEEN ANIMATIONS ON CLICK
-
-//how can I modulize this part so I can easily add it to the hand scene?
-//want to have the functions that I can run in the render function and then I want the on click and an on move functions to take effect
-
-
-
-//the on move function affects the hit variable that is used in the on click function
-//the on move function needs the clickableBlurbMeshes to do the raycasting.
-
-//need to have the tweens defined for the shrink and grow functions
-
 var mouseManagerConfig = {
 	TWEEN: TWEEN,
 	camera: camera,
@@ -138,20 +114,15 @@ var mouseManagerConfig = {
 
 var manager = new mouseManager(mouseManagerConfig);
 
-// it would be nice to have a satisfying bounce to the button when you press it, via some easing function.
-
 // RESIZE
 
 window.addEventListener( 'resize', onWindowResize, false );
 
 function onWindowResize(){
-
     var width = window.innerWidth;
     var height = window.innerHeight;
-
     camera.aspect = width/height;
     camera.updateProjectionMatrix();
-
     renderer.setSize( width,height);
 }
 
@@ -177,7 +148,6 @@ function render(time)
 	manager.updateCameraDampened();
 	updateBlurbs();
 	
-
     renderer.render(scene,camera);
     requestAnimationFrame ( render );
 }
