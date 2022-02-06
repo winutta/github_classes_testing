@@ -1,5 +1,12 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
+import { textObjManager } from '../TextObjManager';
+
+//Sets up the group object to carry the text and background
+//sets text settings, and position on the group object
+//creates an on text load function that takes a callback if available
+//also on text load, add the background and text to avoid visible resizing of the background.
+// console.log(blurbManager);
 
 export class BaseText extends THREE.Group {
 	constructor(text,position){
@@ -7,6 +14,7 @@ export class BaseText extends THREE.Group {
 		this.position.copy(new THREE.Vector3(...position));
 		this.Text = new Text();
 		this.setText(text);
+		textObjManager.textObjs.push(this);
 	}
 
 	setText(text) {
@@ -23,20 +31,29 @@ export class BaseText extends THREE.Group {
 		this.Text.textInset = 0.1;
 	}
 
-	onLoad(callBack){
-		this.Text.sync(callBack);
+	onLoad() {
+		this.Text.sync(() => {
+			if (this.callBack){this.callBack();} 
+			this.add(this.Background);
+			this.add(this.Text);
+		});
 	}
+
+	faceDirection = function (direction) {
+		var directionTarget = this.getWorldPosition(new THREE.Vector3()).add(direction);
+		this.lookAt(directionTarget);
+	}
+
 }
 
 export class SquareText extends BaseText {
 	constructor(text, position) {
 		super(text,position);
-		this.Background = this.generateMesh();
-		this.onLoad(this.doAfterLoad.bind(this));
-
+		this.Background = this.generateBackground();
+		this.onLoad.call(this);
 	}
 
-	generateMesh() {
+	generateBackground() {
 		var geometry = new THREE.PlaneGeometry(1, 1);
 		var material = new THREE.MeshBasicMaterial({ color: "black" });
 		return new THREE.Mesh(geometry, material);
@@ -49,29 +66,34 @@ export class SquareText extends BaseText {
 		this.Background.scale.set(widthText + 2 * this.Text.textInset, heightText + 2 * this.Text.textInset, 1.);
 	}
 
-	doAfterLoad() {
+	callBack(){
 		this.sizeBackground();
-		this.add(this.Background);
-		this.add(this.Text);
 	}
 }
 
-
 export class CircleText extends BaseText {
-	constructor(text, position){
+	constructor(text, position = [0,0,0]){
 		super(text,position);
-		this.Background = this.generateMesh();
-		this.onLoad(this.doAfterLoad.bind(this))
+		this.Background = this.generateBackground();
+		this.onLoad.call(this);
 	}
 
-	generateMesh() {
+	generateBackground() {
 		var geometry = new THREE.CircleGeometry(.25, 32);
 		var material = new THREE.MeshBasicMaterial({ color: "black" });
 		return new THREE.Mesh(geometry, material);
 	}
 
-	doAfterLoad() {
-			this.add(this.Background);
-			this.add(this.Text);
+}
+
+export class TextSystem extends THREE.Group {
+	constructor(Button,Popout,position){
+		super();
+		this.position.copy(new THREE.Vector3(...position));
+		this.Button = Button;
+		this.Popout = Popout;
+		this.add(Button);
+		this.add(Popout);
 	}
+
 }

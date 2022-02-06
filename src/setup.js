@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { textObjManager } from './TextObjManager';
 
 export function setup(){
     
@@ -12,6 +13,7 @@ export function setup(){
 
     var camera = new THREE.PerspectiveCamera( 53, window.innerWidth / window.innerHeight, 0.25, 2000 );
     camera.position.set(0.,0.,8.);
+    textObjManager.camera = camera;
 
     // RENDERER SETUP
 

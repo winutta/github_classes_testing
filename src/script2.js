@@ -3,14 +3,16 @@ import * as THREE from 'three'
 
 import {setup} from "./setup.js"
 
-import { CircleText, SquareText} from "./core/Blurb2.js"
-
+import { CircleText, SquareText} from "./core/TextClasses.js"
+import { textObjManager} from "./TextObjManager.js"
 
 function main() {
 
 // SCENE SETUP
 
 var {scene, camera, renderer} = setup();
+
+
 
 // ADD NEW 
 
@@ -25,6 +27,7 @@ scene.add(sq3)
 
 function render(time)
 {   
+    textObjManager.faceCamera();
     renderer.render(scene,camera);
     requestAnimationFrame ( render );
 }
