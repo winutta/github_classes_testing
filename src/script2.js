@@ -1,18 +1,17 @@
 import './style.css'
 import * as THREE from 'three'
 
-import {setup} from "./setup.js"
+import {setup} from "./setup"
 
-import { CircleText, SquareText} from "./core/TextClasses.js"
-import { textObjManager} from "./TextObjManager.js"
+import { CircleText, SquareText, TextSystem} from "./core/TextClasses"
+import { textObjManager} from "./TextObjManager"
+import { setupText } from './textSetup'
 
 function main() {
 
 // SCENE SETUP
 
-var {scene, camera, renderer} = setup();
-
-
+var {scene, camera, renderer} = setup;
 
 // ADD NEW 
 
@@ -21,6 +20,21 @@ scene.add(sq2);
 
 var sq3 = new CircleText("B", [2,0,0]);
 scene.add(sq3)
+
+// Text System 
+
+var tsconfig1 = {
+    buttonText: "H",
+    popoutText: "Hi there",
+    popoutOffset: [-2,0,0],
+    position: [0,0,0], 
+}
+
+var ts = new TextSystem(tsconfig1); 
+
+// Add Text Systems in module
+
+setupText();
 
 
 // RENDER LOOP

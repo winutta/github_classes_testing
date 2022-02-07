@@ -1,12 +1,12 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
 import { textObjManager } from '../TextObjManager';
+import {setup} from "../setup.js"
 
 //Sets up the group object to carry the text and background
 //sets text settings, and position on the group object
 //creates an on text load function that takes a callback if available
 //also on text load, add the background and text to avoid visible resizing of the background.
-// console.log(blurbManager);
 
 export class BaseText extends THREE.Group {
 	constructor(text,position){
@@ -46,6 +46,10 @@ export class BaseText extends THREE.Group {
 
 }
 
+
+
+
+
 export class SquareText extends BaseText {
 	constructor(text, position) {
 		super(text,position);
@@ -71,6 +75,9 @@ export class SquareText extends BaseText {
 	}
 }
 
+
+
+
 export class CircleText extends BaseText {
 	constructor(text, position = [0,0,0]){
 		super(text,position);
@@ -86,14 +93,26 @@ export class CircleText extends BaseText {
 
 }
 
+// Pass in circle,square text objs or pass in parameters to create them in textsystem
+// I think I want to pass in the parameters
+// Button Text, Popout Text, Popout Offset, TextSystem position
+// As parameters or as config obj?
+
 export class TextSystem extends THREE.Group {
-	constructor(Button,Popout,position){
+	constructor(config){
 		super();
-		this.position.copy(new THREE.Vector3(...position));
-		this.Button = Button;
-		this.Popout = Popout;
-		this.add(Button);
-		this.add(Popout);
+		this.position.copy(new THREE.Vector3(...config.position));
+
+		this.Button = new CircleText(config.buttonText);
+		this.Button.System = this;
+
+		this.Popout = new SquareText(config.popoutText,config.popoutOffset);
+		this.Popout.System = this;
+
+		this.add(this.Button);
+		this.add(this.Popout);
+
+		setup.scene.add(this);
 	}
 
 }
