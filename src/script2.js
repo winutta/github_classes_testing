@@ -7,6 +7,7 @@ import { CircleText, SquareText, TextSystem} from "./core/TextClasses"
 import { textObjManager} from "./TextObjManager"
 import { setupText } from './textSetup'
 import {mouseManager, TweenAnimation} from "./movementManagers"
+import {clickManager} from "./core/clickManager"
 
 
 
@@ -23,7 +24,6 @@ var {scene, camera, renderer,TWEEN} = setup;
 // Add Text Systems in module
 
 setupText();
-
 
 // RENDER LOOP
 

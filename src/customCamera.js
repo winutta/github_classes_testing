@@ -1,15 +1,20 @@
 // import {Text} from 'troika-three-text'
 import * as THREE from 'three'
+import { mouseManager} from "./movementManagers"
 
 export class CustomCamera extends THREE.PerspectiveCamera {
-    constructor(fov, aspect, near, far, mouse){
+    constructor(fov, aspect, near, far){
         super(fov,aspect,near,far);
-        this.mouse = mouse;
+        this.mouse = mouseManager.mouse;
+        mouseManager.camera = this;
         this.cameraBase = new THREE.Group();
         this.cameraBase.position.set(0., 0., 8);
         this.cameraBase.add(this);
         this.target = new THREE.Vector3(0., 0., 0.);
+        this.defaultTarget = this.target.clone();
         this.basePosition = this.cameraBase.position.clone();
+        this.defaultPosition = this.cameraBase.position.clone();
+
 
 
         this.offsetScale = 4.;
@@ -39,6 +44,8 @@ export class CustomCamera extends THREE.PerspectiveCamera {
         var currPos = new THREE.Vector3();
         currPos.addVectors(this.basePosition, worldOffset);
         this.cameraBase.position.copy(currPos);
+
+        // console.log(this.cameraBase.position);
 
         this.lookAt(this.target);
     }

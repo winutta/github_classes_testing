@@ -38,13 +38,13 @@ export class TweenAnimation {
         this.targetProperties = targetProperties;
         this.baseProperties = baseProperties;
 
-        console.log("target :", this.targetProperties);
-        console.log("base   :", this.baseProperties );
+        // console.log("target :", this.targetProperties);
+        // console.log("base   :", this.baseProperties );
 
     }
 
     forward(timeDiff){
-        console.log("moving forward");
+        // console.log("moving forward");
         if (this.backwardTween._isPlaying) {
             this.backwardTween.stop();
         }
@@ -54,7 +54,7 @@ export class TweenAnimation {
     }
     
     backward(timeDiff){
-        console.log("moving backward");
+        // console.log("moving backward");
         if (this.forwardTween._isPlaying) {
             this.forwardTween.stop();
         }
@@ -65,7 +65,7 @@ export class TweenAnimation {
 
 export class MouseManager {
     constructor(){
-        this.mouse = setup.mouse;
+        this.mouse = new THREE.Vector2();
         window.addEventListener("mousemove", this, false);
 
 
@@ -96,6 +96,9 @@ export class MouseManager {
         // console.log(this.mouse);
         // this.rayCast();
     }
+
+    // Want to add Raycasting and hit checking
+    // Also the Tween managment
 }
 
 var mouseManager = new MouseManager();

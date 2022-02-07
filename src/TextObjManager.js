@@ -1,6 +1,7 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
 import {setup} from "./setup"
+// import { CircleText } from './core/TextClasses';
 
 // Allows for a persistent blurbManager
 // that can be used to update the blurb empties to face the camera
@@ -11,6 +12,7 @@ import {setup} from "./setup"
 export class TextObjManager {
     constructor(){
         this.textObjs = [];
+        this.allClickable = [];
         this.camera = setup.camera;
 
         if (!TextObjManager._instance) {
@@ -26,6 +28,7 @@ export class TextObjManager {
             textObj.faceDirection(cameraDir);
         });
     }
+    
 }
 
 var textObjManager = new TextObjManager();

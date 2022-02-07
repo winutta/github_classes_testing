@@ -12,4 +12,13 @@ export function setupText() {
 
     var ts1 = new TextSystem(tsconfig1);
 
+    var tsconfig2 = {
+        buttonText: "W",
+        popoutText: "Hello My Name is willard, Hello My Name is willard, Hello My Name is willard, Hello My Name is willard, Hello My Name is willard",
+        popoutOffset: [-2, -1, 1],
+        position: [0, 1, 0],
+    }
+
+    var ts2 = new TextSystem(tsconfig2);
+
 }

@@ -9,13 +9,9 @@ export class Setup {
         var scene = new THREE.Scene({ antialias: true });
         scene.background = new THREE.Color( 0x1c1c1c );
 
-        // MOUSE SETUP
-
-        var mouse = new THREE.Vector2();
-
         // CAMERA SETUP
 
-        var camera = new CustomCamera(53, window.innerWidth / window.innerHeight, 0.25, 2000, mouse)
+        var camera = new CustomCamera(53, window.innerWidth / window.innerHeight, 0.25, 2000)
 
         // RENDERER SETUP
 
@@ -52,7 +48,7 @@ export class Setup {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        this.mouse = mouse;
+        // this.mouse = mouse;
         // this.controls = controls;
         this.TWEEN = TWEEN;
 
