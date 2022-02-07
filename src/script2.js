@@ -6,31 +6,19 @@ import {setup} from "./setup"
 import { CircleText, SquareText, TextSystem} from "./core/TextClasses"
 import { textObjManager} from "./TextObjManager"
 import { setupText } from './textSetup'
+import {mouseManager, TweenAnimation} from "./movementManagers"
+
+
 
 function main() {
 
 // SCENE SETUP
 
-var {scene, camera, renderer} = setup;
+var {scene, camera, renderer,TWEEN} = setup;
 
-// ADD NEW 
-
-var sq2 = new SquareText("Hello",[0,2,0]);
-scene.add(sq2);
-
-var sq3 = new CircleText("B", [2,0,0]);
-scene.add(sq3)
-
-// Text System 
-
-var tsconfig1 = {
-    buttonText: "H",
-    popoutText: "Hi there",
-    popoutOffset: [-2,0,0],
-    position: [0,0,0], 
-}
-
-var ts = new TextSystem(tsconfig1); 
+// var cameraMove = new TweenAnimation(camera, {position: new THREE.Vector3(1,0,8)}, "InOut","InOut");
+// cameraMove.forward(1000);
+// setTimeout(()=>{cameraMove.backward(1000)},1000);
 
 // Add Text Systems in module
 
@@ -41,6 +29,8 @@ setupText();
 
 function render(time)
 {   
+    TWEEN.update();
+    camera.updateCameraPan();
     textObjManager.faceCamera();
     renderer.render(scene,camera);
     requestAnimationFrame ( render );

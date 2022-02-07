@@ -1,5 +1,6 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
+import {setup} from "./setup"
 
 // Allows for a persistent blurbManager
 // that can be used to update the blurb empties to face the camera
@@ -10,6 +11,13 @@ import * as THREE from 'three'
 export class TextObjManager {
     constructor(){
         this.textObjs = [];
+        this.camera = setup.camera;
+
+        if (!TextObjManager._instance) {
+            TextObjManager._instance = this;
+        }
+
+        return TextObjManager._instance; 
     }
 
     faceCamera(){

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { textObjManager } from './TextObjManager';
+import { CustomCamera } from './customCamera';
 
 export class Setup {
     constructor(){
@@ -9,11 +9,13 @@ export class Setup {
         var scene = new THREE.Scene({ antialias: true });
         scene.background = new THREE.Color( 0x1c1c1c );
 
+        // MOUSE SETUP
+
+        var mouse = new THREE.Vector2();
+
         // CAMERA SETUP
 
-        var camera = new THREE.PerspectiveCamera( 53, window.innerWidth / window.innerHeight, 0.25, 2000 );
-        camera.position.set(0.,0.,8.);
-        textObjManager.camera = camera;
+        var camera = new CustomCamera(53, window.innerWidth / window.innerHeight, 0.25, 2000, mouse)
 
         // RENDERER SETUP
 
@@ -40,16 +42,25 @@ export class Setup {
 
         //ORBIT CONTROL
 
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.update();
+        // const controls = new OrbitControls(camera, renderer.domElement);
+        // controls.update();
+
+        const TWEEN = require('@tweenjs/tween.js');
 
         // Add to instance
 
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        this.controls = controls;
+        this.mouse = mouse;
+        // this.controls = controls;
+        this.TWEEN = TWEEN;
 
+        if (!Setup._instance) {
+            Setup._instance = this;
+        }
+
+        return Setup._instance; 
     }
     
 }

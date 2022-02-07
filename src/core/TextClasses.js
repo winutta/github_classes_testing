@@ -93,10 +93,9 @@ export class CircleText extends BaseText {
 
 }
 
-// Pass in circle,square text objs or pass in parameters to create them in textsystem
-// I think I want to pass in the parameters
-// Button Text, Popout Text, Popout Offset, TextSystem position
-// As parameters or as config obj?
+
+
+
 
 export class TextSystem extends THREE.Group {
 	constructor(config){
@@ -113,6 +112,7 @@ export class TextSystem extends THREE.Group {
 		this.add(this.Popout);
 
 		setup.scene.add(this);
+		
 	}
 
 }
