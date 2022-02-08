@@ -1,8 +1,51 @@
 // import {Text} from 'troika-three-text'
 import * as THREE from 'three'
-import { mouseManager} from "../movementManagers"
-import { setup } from '../setup';
-import { textObjManager } from '../TextObjManager';
+import { setup } from './setup';
+import { mouseManager} from "./mouseManager"
+import { textObjManager } from './TextObjManager';
+
+
+// animations activated on click
+
+export class TweenAnimation {
+    constructor(reciever, baseProperties, targetProperties, easeForward, easeBackward) {
+        var { TWEEN } = setup;
+
+        this.TWEEN = TWEEN;
+
+        this.forwardTween = new TWEEN.Tween();
+        this.forwardEasing = TWEEN.Easing.Quadratic[easeForward];
+        this.backwardTween = new TWEEN.Tween();
+        this.backwardEasing = TWEEN.Easing.Quadratic[easeBackward];
+
+        this.reciever = reciever;
+
+        this.targetProperties = targetProperties;
+        this.baseProperties = baseProperties;
+
+    }
+
+    forward(timeDiff) {
+        // console.log("moving forward");
+        if (this.backwardTween._isPlaying) {
+            this.backwardTween.stop();
+        }
+        this.forwardTween = new this.TWEEN.Tween(this.reciever).to(this.targetProperties, timeDiff).easing(this.forwardEasing);
+        this.forwardTween.start();
+
+    }
+
+    backward(timeDiff) {
+        // console.log("moving backward");
+        if (this.forwardTween._isPlaying) {
+            this.forwardTween.stop();
+        }
+        this.backwardTween = new this.TWEEN.Tween(this.reciever).to(this.baseProperties, timeDiff).easing(this.backwardEasing);
+        this.backwardTween.start();
+    }
+}
+
+// handle clicks
 
 export class ClickManager {
     constructor(){
@@ -25,12 +68,7 @@ export class ClickManager {
 
     }
 
-    // Maybe just make a property tweens that has a list of tweens;
-    // Maybe handling time should be done at the textSystem level
-    // so switching textSystems doesnt cause the next one to open super fast
-
     shrink(system) {
-        // var timeDiff = Date.now() - this.previousTime;
         var timeDiff = Date.now() - system.previousTime;
         if (timeDiff > 500) { timeDiff = 500; }
 
@@ -44,12 +82,6 @@ export class ClickManager {
         if (timeDiff > 500) { timeDiff = 500; }
 
         system.runForward(timeDiff);
-
-        // system.popoutTween.forward(timeDiff);
-
-        // system.cameraPosTween.forward(timeDiff);
-
-        // system.cameraTargetTween.forward(timeDiff);
 
         system.previousTime = Date.now();
     }

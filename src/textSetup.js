@@ -1,4 +1,4 @@
-import { TextSystem } from "./core/TextClasses.js"
+import { TextSystem } from "./TextClasses.js"
 
 export function setupText() {
     // Make Text Systems and add them to the scene.
@@ -16,7 +16,7 @@ export function setupText() {
         buttonText: "W",
         popoutText: "Hello My Name is willard, Hello My Name is willard, Hello My Name is willard, Hello My Name is willard, Hello My Name is willard",
         popoutOffset: [-2, -1, 1],
-        position: [0, 1, 0],
+        position: [1, 1, 0],
     }
 
     var ts2 = new TextSystem(tsconfig2);

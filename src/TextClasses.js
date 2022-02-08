@@ -1,8 +1,10 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
-import { textObjManager } from '../TextObjManager';
-import {setup} from "../setup.js"
-import { TweenAnimation } from '../movementManagers';
+
+import { setup } from "./setup.js"
+
+import { textObjManager } from './TextObjManager';
+import { TweenAnimation } from './clickManager';
 
 //Sets up the group object to carry the text and background
 //sets text settings, and position on the group object

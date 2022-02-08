@@ -1,7 +1,6 @@
 import {Text} from 'troika-three-text'
 import * as THREE from 'three'
 import {setup} from "./setup"
-// import { CircleText } from './core/TextClasses';
 
 // Allows for a persistent blurbManager
 // that can be used to update the blurb empties to face the camera

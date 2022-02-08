@@ -1,153 +1,40 @@
 import './style.css'
-import * as THREE from 'three'
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
-import {Text} from 'troika-three-text'
+// import * as THREE from 'three'
 
+// import {setup} from "./setup"
 
-import {blurbSystem} from "./core/Blurb.js"
-import {mouseManager,tester} from "./core/mouseManagement.js"
+// import { setupText } from './textSetup'
 
+// import { textObjManager} from "./TextObjManager"
+// import { mouseManager } from "./mouseManager"
+// import { clickManager } from "./clickManager"
+
+import {setup,setupText,textObjManager} from "./interface" // how I will use it in the hands scene
+
+// mouseManager, clickManager not necessary here because they are imported elsewhere and thus "initialized"
+// But having these imported here might clarify that they have been "initialized"
 
 function main() {
 
-const TWEEN = require('@tweenjs/tween.js')
-// ROLL THE SCENE			
+// SCENE SETUP
 
-var scene = new THREE.Scene({ antialias: true });
-scene.background = new THREE.Color( 0x1c1c1c );
+var {scene, camera, renderer,TWEEN} = setup;
 
+// var mm = mouseManager;
+// var tm = textObjManager;
+// var cm = clickManager
 
-// CAMERA SETUP
+// Add Text Systems in module
 
-var camera = new THREE.PerspectiveCamera( 53, window.innerWidth / window.innerHeight, 0.25, 2000 );
-camera.position.set(0.,0.,8.);
-
-var basePosition = new THREE.Vector3(0,0,8);
-var defaultTarget = new THREE.Vector3(0,0,0);
-var defaultPosition = new THREE.Vector3(0,0,8);
-camera.target = new THREE.Vector3(0,0,0);
-camera.basePosition = basePosition;
-camera.defaultPosition = defaultPosition;
-camera.defaultTarget = defaultTarget;
-
-// RENDERER SETUP
-
-var renderer = new THREE.WebGLRenderer({antialias: true});
-
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
-
-const container = document.createElement( 'div' );
-document.body.appendChild( container );
-container.appendChild( renderer.domElement );
-
-//ORBIT CONTROL
-
-// const controls = new OrbitControls( camera, renderer.domElement );
-// controls.update();
-
-// var canvas = renderer.domElement;
-
-// canvas.onclick = function() {
-//   // canvas.requestPointerLock();
-//   if (canvas.requestFullscreen) {
-//         canvas.requestFullscreen();
-//       } else if (canvas.mozRequestFullScreen) { /* Firefox */
-//         canvas.mozRequestFullScreen();
-//       } else if (canvas.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-//         canvas.webkitRequestFullscreen();
-//       } else if (canvas.msRequestFullscreen) { /* IE/Edge */
-//         canvas.msRequestFullscreen();
-//       }
-// }
-
-
-
-var blurb1Options = {
-	popoutText: "Jack Sprat could eat no fat. His wife could eat no lean. So between the two of them, they licked the platter clean.",
-	buttonText: "J",
-	position: new THREE.Vector3(-2,-2,0),
-	offset: new THREE.Vector3(3,2,0),
-	scene: scene,
-	name: "jack",
-}
-
-var blurb2Options = {
-	popoutText: "Blah aahsjdn shdcn skjdnc kjsndc iewkmd eikd kdkdo dk dodk os kdko dkd kdkd d.",
-	buttonText: "H",
-	position: new THREE.Vector3(2,2,0),
-	offset: new THREE.Vector3(3,2,0),
-	scene: scene,
-	name: "blah",
-}
-
-var blurb3Options = {
-	popoutText: "Can I even do this?.",
-	buttonText: "C",
-	position: new THREE.Vector3(2,-2,-2),
-	offset: new THREE.Vector3(3,2,0),
-	scene: scene,
-	name: "can",
-}
-
-var blurb1 = new blurbSystem(blurb1Options);
-var blurb2 = new blurbSystem(blurb2Options);
-var blurb3 = new blurbSystem(blurb3Options);
-
-var blurbs = [blurb1,blurb2,blurb3];
-
-//all buttons and popouts
-
-var allClickable = [];
-blurbs.forEach((element)=>{
-	var buttonMesh = element.button.Background;
-	var popoutMesh = element.popout.Background;
-	allClickable.push(buttonMesh,popoutMesh);
-});
-
-
-var mouseManagerConfig = {
-	TWEEN: TWEEN,
-	camera: camera,
-	allClickable: allClickable,
-}
-
-var manager = new mouseManager(mouseManagerConfig);
-
-// RESIZE
-
-window.addEventListener( 'resize', onWindowResize, false );
-
-function onWindowResize(){
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    camera.aspect = width/height;
-    camera.updateProjectionMatrix();
-    renderer.setSize( width,height);
-}
-
-//Make blurbs face the camera.
-
-function updateBlurbs(){
-	var offsetVector = camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(-1.);
-	blurbs.forEach((element) => {
-		element.faceCamera(offsetVector);
-	})
-}
-
-function updateCamera(){
-	camera.lookAt(camera.target);
-}
+setupText();
 
 // RENDER LOOP
 
 function render(time)
 {   
-	TWEEN.update();
-	updateCamera();
-	manager.updateCameraDampened();
-	updateBlurbs();
-	
+    TWEEN.update(); // update tween animations
+    camera.updateCamera(true); // true to pan, false or no arg to not pan, moves camera and has it look at its target
+    textObjManager.faceCamera(); //Make all text Objs look flush to the camera
     renderer.render(scene,camera);
     requestAnimationFrame ( render );
 }

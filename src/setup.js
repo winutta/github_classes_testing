@@ -48,8 +48,6 @@ export class Setup {
         this.scene = scene;
         this.camera = camera;
         this.renderer = renderer;
-        // this.mouse = mouse;
-        // this.controls = controls;
         this.TWEEN = TWEEN;
 
         if (!Setup._instance) {

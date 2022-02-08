@@ -1,6 +1,8 @@
 // import {Text} from 'troika-three-text'
 import * as THREE from 'three'
-import { mouseManager} from "./movementManagers"
+import { mouseManager} from "./mouseManager"
+
+// camera with method to pan based on mouse
 
 export class CustomCamera extends THREE.PerspectiveCamera {
     constructor(fov, aspect, near, far){
@@ -22,7 +24,7 @@ export class CustomCamera extends THREE.PerspectiveCamera {
 
     }
 
-    updateCameraPan() {
+    updateCamera(pan) {
 
         var newOffset = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.);
         newOffset.multiplyScalar(this.offsetScale);
@@ -42,7 +44,11 @@ export class CustomCamera extends THREE.PerspectiveCamera {
         var worldOffset = xContrib.add(yContrib);
 
         var currPos = new THREE.Vector3();
-        currPos.addVectors(this.basePosition, worldOffset);
+        if(pan)
+            currPos.addVectors(this.basePosition, worldOffset);
+        else{
+            currPos.copy(this.basePosition);
+        }
         this.cameraBase.position.copy(currPos);
 
         // console.log(this.cameraBase.position);
